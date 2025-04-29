@@ -1,14 +1,51 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"thermo/handlers"
+    // "encoding/json"
+    "fmt"
+    "log"
+    "net/http"
+    "os"
+
+    "github.com/redis/go-redis/v9"
+    "context"
 )
 
-func main() {
-	http.HandleFunc("/weather", handlers.GetWeather)
+var ctx = context.Background()
+var rdb *redis.Client
 
-	log.Println("[Thermo] Weather API running on :8081")
-	log.Fatal(http.ListenAndServe(":8081", nil))
+func main() {
+    redisAddr := os.Getenv("REDIS_ADDR")
+    if redisAddr == "" {
+        redisAddr = "redis:6379" // fallback default
+    }
+
+    rdb = redis.NewClient(&redis.Options{
+        Addr: redisAddr,
+    })
+
+    http.HandleFunc("/weather", weatherHandler)
+
+    log.Println("[Thermo] Weather API running on :8081")
+    http.ListenAndServe(":8081", nil)
+}
+
+func weatherHandler(w http.ResponseWriter, r *http.Request) {
+    city := r.URL.Query().Get("city")
+    if city == "" {
+        http.Error(w, "City is required as query param, e.g., ?city=Dhaka", http.StatusBadRequest)
+        return
+    }
+
+    data, err := rdb.Get(ctx, city).Result()
+    if err == redis.Nil {
+        http.Error(w, "City not found", http.StatusNotFound)
+        return
+    } else if err != nil {
+        http.Error(w, "Internal server error", http.StatusInternalServerError)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    fmt.Fprint(w, data)
 }
