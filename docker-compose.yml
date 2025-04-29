@@ -1,26 +1,29 @@
-version: '3.8'
-
 services:
   redis:
-    image: redis:7-alpine
-    container_name: redis
+    image: redis
     ports:
       - "6379:6379"
 
+  thermo:
+    build: ./thermo
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_ADDR=redis:6379
+
   throttle:
     build: ./throttle
-    container_name: throttle
     ports:
       - "8080:8080"
     depends_on:
       - redis
 
-  thermo:
-    build: ./thermo
-    container_name: thermo
-    ports:
-      - "8081:8081"
-    environment:
-      - THROTTLE_URL=http://throttle:8080/check
+  redis-seed:
+    image: redis
     depends_on:
-      - throttle
+      - redis
+    entrypoint: ["/bin/sh", "-c", "/init/seed_redis.sh"]
+    volumes:
+      - ./init:/init
