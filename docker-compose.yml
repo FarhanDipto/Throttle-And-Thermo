@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  throttle:
+    build: ./throttle
+    container_name: throttle
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+
+  thermo:
+    build: ./thermo
+    container_name: thermo
+    ports:
+      - "8081:8081"
+    environment:
+      - THROTTLE_URL=http://throttle:8080/check
+    depends_on:
+      - throttle
