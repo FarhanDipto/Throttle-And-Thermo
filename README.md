@@ -119,10 +119,6 @@ docker-compose up
 No rebuild is needed unless you've changed code.
 
 
-## 🤝 Contribution
-
-Feel free to fork, extend, and PR. If you're learning Go, Docker, or Redis!
-
 ## 🧹 Clean Up
 
 To stop and remove containers and volumes:
