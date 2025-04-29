@@ -50,7 +50,7 @@ ThrottleAndThermo/
 ### Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/ThrottleAndThermo.git
+git clone https://github.com/FarhanDipto/Throttle-And-Thermo.git
 cd ThrottleAndThermo
 ```
 
@@ -76,16 +76,7 @@ All requests must include an API key:
 curl -X GET "http://localhost:8081/weather?city=Dhaka" -H "X-API-Key: my-key"
 ```
 
-Replace `"Dhaka"` with any supported city:
-
-- Dhaka
-- Tokyo
-- London
-- Paris
-- New York
-- Delhi
-
-If the city is not passed:
+Replace `"Dhaka"` with any famous cities. If the city is not passed:
 
 ```
 City is required as query param, e.g., ?city=Dhaka
@@ -127,15 +118,10 @@ docker-compose up
 
 No rebuild is needed unless you've changed code.
 
-## 💡 Future Ideas
-
-- Add a real weather API data puller (e.g., OpenWeatherMap)
-- Track usage per key and provide dashboard
-- Add authentication and user registration
 
 ## 🤝 Contribution
 
-Feel free to fork, extend, and PR. If you're learning Go, Docker, or Redis — this repo is made for you!
+Feel free to fork, extend, and PR. If you're learning Go, Docker, or Redis!
 
 ## 🧹 Clean Up
 
@@ -143,9 +129,4 @@ To stop and remove containers and volumes:
 
 ```bash
 docker-compose down -v
-```
-
-## 📬 Contact
-
-Built with ❤️ by [Your Name](mailto:your.email@example.com)
 ```
