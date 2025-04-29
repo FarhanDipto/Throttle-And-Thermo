@@ -17,7 +17,7 @@ var rdb *redis.Client
 func main() {
     redisAddr := os.Getenv("REDIS_ADDR")
     if redisAddr == "" {
-        redisAddr = "redis:6379" // fallback default
+        redisAddr = "redis:6379" 
     }
 
     rdb = redis.NewClient(&redis.Options{
